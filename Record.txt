@@ -1,0 +1,72 @@
+create database PGHanWeb; 
+ALTER DATABASE  PGHanWeb DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; 
+
+drop TABLE `pg_order`;
+CREATE TABLE `pg_order` (
+  `OrderID` varchar(36) NOT NULL COMMENT '订单系统编码',
+  `OrderCode` varchar(36) NOT NULL COMMENT '订单编码',
+  `OrderName` varchar(20) NOT NULL COMMENT '订单名称',
+  `TotalPrice` varchar(20) DEFAULT NULL COMMENT '订单总价',
+  `Customer` varchar(255) DEFAULT NULL COMMENT '客户名称',
+  `CustomerAddress` varchar(255) DEFAULT NULL COMMENT '客户地址',
+  `Status` int(11) NOT NULL DEFAULT '1' COMMENT '订单状态(1,有效，-1,删除)',
+  `CreatedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '创建人',
+  `CreatedDate` datetime NOT NULL COMMENT '创建时间',
+  `ModifiedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '修改人',
+  `ModifiedDate` datetime NOT NULL COMMENT '修改时间',
+   PRIMARY KEY (`OrderID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单表';
+
+CREATE TABLE `pg_order_goods` (
+  `GoodsID` varchar(36) NOT NULL COMMENT '订单系物品系统编码',
+  `GoodsCode` varchar(36) NOT NULL COMMENT '订单物品编码',
+  `GoodsName` varchar(20) NOT NULL COMMENT '订单物品名称',
+  `OrderCode` varchar(36) NOT NULL COMMENT '订单code 来源于(pg_order)',
+  `GoodsType` varchar(20) NOT NULL COMMENT '1,烟 2,酒 3,茶',	
+  `Number` varchar(20) NOT NULL COMMENT '数量',	
+  `Price` varchar(20) NOT NULL COMMENT '价格',	
+  `Status` int(11) NOT NULL DEFAULT '1' COMMENT '订单物品状态(1,有效，-1,删除)',
+  `CreatedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '创建人',
+  `CreatedDate` datetime NOT NULL COMMENT '创建时间',
+  `ModifiedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '修改人',
+  `ModifiedDate` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`GoodsID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单物品表';
+
+drop  TABLE `pg_order_goods`;
+CREATE TABLE `pg_order_goods` (
+  `GoodsID` varchar(36) NOT NULL COMMENT '订单物品系统编码',
+  `GoodsCode` varchar(36) NOT NULL COMMENT '订单物品编码',
+  `GoodsName` varchar(20) NOT NULL COMMENT '订单物品名称',
+  `OrderCode` varchar(36) NOT NULL COMMENT '订单code 来源于(pg_order)',
+  `GoodsType` varchar(20) NOT NULL COMMENT '1,烟 2,酒 3,茶',	
+  `Number` varchar(20) NOT NULL COMMENT '数量',	
+	`Price` varchar(20) NOT NULL COMMENT '价格',	
+  `Status` int(11) NOT NULL DEFAULT '1' COMMENT '订单物品状态(1,有效，-1,删除)',
+  `CreatedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '创建人',
+  `CreatedDate` datetime NOT NULL COMMENT '创建时间',
+  `ModifiedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '修改人',
+  `ModifiedDate` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`GoodsID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单物品表';
+
+drop  TABLE `pg_goods`;
+CREATE TABLE `pg_goods` (
+  `GoodsID` varchar(36) NOT NULL COMMENT '物品系统编码',
+  `GoodsCode` varchar(36) NOT NULL COMMENT '物品编码',
+  `GoodsName` varchar(20) NOT NULL COMMENT '物品名称',
+  `GoodsType` varchar(20) NOT NULL COMMENT '1,烟 2,酒 3,茶',	
+  `Number` varchar(20) NOT NULL COMMENT '数量',	
+  `UnitPrice` varchar(20) NOT NULL COMMENT '单价',	
+  `Unit` varchar(20) NOT NULL COMMENT '单位',	
+  `Status` int(11) NOT NULL DEFAULT '1' COMMENT '订单物品状态(1,有效，-1,删除)',
+  `CreatedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '创建人',
+  `CreatedDate` datetime NOT NULL COMMENT '创建时间',
+  `ModifiedBy` varchar(20) NOT NULL DEFAULT 'SystemAdmin' COMMENT '修改人',
+  `ModifiedDate` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`GoodsID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='物品表'
+
+
+
+
