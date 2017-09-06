@@ -3,7 +3,7 @@ package com.pg.bean;
 public class Pg_goods {
 
 	private String GoodsID;			 //物品系统编码,
-	private String GoodsCode;		 //物品编码,
+	//private String GoodsCode;		 //物品编码,
 	private String GoodsName;		 //物品名称,
 	private String GoodsType;		 //1,烟 2,酒 3,茶,	
 	private String Number;			 //数量,	
@@ -15,7 +15,7 @@ public class Pg_goods {
 	private String ModifiedBy; 		 //修改人
 	private String ModifiedDate; 	 //修改时间
 
-	//GoodsID,GoodsCode,GoodsName,GoodsType,
+	//GoodsID,GoodsName,GoodsType,
 	//Number,UnitPrice,Unit,Status,
 	//CreatedBy,CreatedDate,ModifiedBy,ModifiedDate
 	
@@ -25,12 +25,12 @@ public class Pg_goods {
 	public void setGoodsID(String goodsID) {
 		GoodsID = goodsID;
 	}
-	public String getGoodsCode() {
-		return GoodsCode;
-	}
-	public void setGoodsCode(String goodsCode) {
-		GoodsCode = goodsCode;
-	}
+	//public String getGoodsCode() {
+	//	return GoodsCode;
+	//}
+	//public void setGoodsCode(String goodsCode) {
+	//	GoodsCode = goodsCode;
+	//}
 	public String getGoodsName() {
 		return GoodsName;
 	}

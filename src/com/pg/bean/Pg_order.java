@@ -3,12 +3,14 @@ package com.pg.bean;
 public class Pg_order {
 	
 	private String OrderID;            //订单系统编码
-	private String OrderCode;          //订单编码
+	//private String OrderCode;          //订单编码
 	private String OrderName;          //订单名称
 	private String TotalPrice;         //订单总价
-	private String Customer;		   //客户名称
+	private String ActualPrice;         //订单实际总价
+	private String Customer;		   //客户名称	
 	private String CustomerAddress;    //客户地址
 	private String Status; 			   //订单状态(1有效，-1删除)
+	private String OrderDate;          //订单时间
 	private String CreatedBy; 		   //创建人
 	private String CreatedDate; 	   //创建时间
 	private String ModifiedBy; 		   //修改人
@@ -24,12 +26,12 @@ public class Pg_order {
 	public void setOrderID(String orderID) {
 		OrderID = orderID;
 	}
-	public String getOrderCode() {
-		return OrderCode;
-	}
-	public void setOrderCode(String orderCode) {
-		OrderCode = orderCode;
-	}
+	//public String getOrderCode() {
+	//	return OrderCode;
+	//}
+	//public void setOrderCode(String orderCode) {
+	//	OrderCode = orderCode;
+	//}
 	public String getOrderName() {
 		return OrderName;
 	}
@@ -41,6 +43,12 @@ public class Pg_order {
 	}
 	public void setTotalPrice(String totalPrice) {
 		TotalPrice = totalPrice;
+	}
+	public String getActualPrice() {
+		return ActualPrice;
+	}
+	public void setActualPrice(String actualPrice) {
+		ActualPrice = actualPrice;
 	}
 	public String getCustomer() {
 		return Customer;
@@ -59,6 +67,12 @@ public class Pg_order {
 	}
 	public void setStatus(String status) {
 		Status = status;
+	}
+	public String getOrderDate() {
+		return OrderDate;
+	}
+	public void setOrderDate(String orderDate) {
+		OrderDate = orderDate;
 	}
 	public String getCreatedBy() {
 		return CreatedBy;
