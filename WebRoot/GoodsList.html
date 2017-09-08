@@ -19,7 +19,7 @@
             	<thead>
                 	<tr>
                         <th colspan="4"><h3>货物列表</h3></th>     
-                        <th><h3><a href="javascript:adduser()">添加货物</a></h3></th>    
+                        <th><h3><a href="javascript:addgoods()">添加货物</a></h3></th>    
                         <th><h3><a href="javascript:history.go(-1)">返回</a></h3></th>                                                               
                     </tr>
                 </thead>
@@ -144,13 +144,13 @@
 		"<td width='17%'>类别</td><td width='17%'>数量</td><td width='17%'>单价</td><td width='17%'>单位</td><td width='15%'>删除</td></tr>";
 		init(currentPage)
 	}
-	function deleteGoods(userCode){
+	function deleteGoods(GoodsID){
         if (confirm("你确定删除货物吗？")) {  
-        	var jsonStr='{"UserCode":"'+userCode+
- 	        '"}';	
+        	//var jsonStr='{"UserCode":"'+userCode+
+ 	        //'"}';	
  			$.ajax({
 	 			 type: "Post",
-	 			 url: "DeleteGoods?jsonStr="+jsonStr,
+	 			 url: "DeleteGoods?GoodsID="+GoodsID,
 	 			 dataType: "html",
 	 			 data: {		            
 	 			 },
@@ -170,8 +170,8 @@
 	function modify(UserCode) {		
 		window.open("UserModify.html?userCode=" + UserCode, "",	"height=700, width=800");
 	}
-	function adduser(){
-		window.open("UserAdd.html", "",	"height=700, width=800");
+	function addgoods(){
+		window.open("GoodsAdd.html", "",	"height=700, width=800");
 		//window.location.href="UserAdd.html"
 	}
 </script>
