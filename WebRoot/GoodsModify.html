@@ -3,7 +3,7 @@
 <head>
 		<meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    	<title>添加货物</title>
+    	<title>货物修改</title>
     	<link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrap-responsive.css" rel="stylesheet">
         <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
@@ -12,12 +12,12 @@
         <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
         <script type="text/javascript" src="js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 	</head>
-    <body>
+    <body onload="getdata()">
     	<form  class="form-horizontal" id = "ajaxFrm"  >
         	<table class="table table-hover table-bordered">
             	<thead>
                 	<tr>
-                        <th><h3>添加货物</h3></th>
+                        <th><h3>货物修改</h3></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,7 +25,7 @@
                         <td>
                         	<label class="control-label" for="inputEmail">名称</label>
 							<div class="controls">
-								<input class="input-xxlarge" type="text" name="GoodsName" id="GoodsName" size="10"  placeholder="名称"  value ="" >
+								<input class="input-xxlarge" type="text" name="GoodsName" id="GoodsName" readonly size="10"  placeholder="名称"  value ="" >
 							</div>
                         </td>
                     </tr>
@@ -77,7 +77,35 @@
         </form>
     </body>
 <script type="text/javascript" src="js/jquery-1.4.1.js"></script>
-<script type="text/javascript">    
+<script type="text/javascript">
+	var GoodsID = "";
+	function getdata(){		
+		var url = document.URL;
+		var tmpNews = url.split('?')[1];  
+		GoodsID = tmpNews.split("=")[1];  
+		$.ajax({
+		        type: "Post",
+		        url: "GetOneGoods?GoodsID="+GoodsID,
+		        dataType: "json",
+		        data: {		            
+		        },
+		        success: function (data) {
+		        	if(data=="error"){		        	
+		        	}else{
+		        		document.getElementById("GoodsName").value = data[0].GoodsName;
+		        		document.getElementById("Number").value = data[0].Number;	
+		        		document.getElementById("UnitPrice").value = data[0].UnitPrice;	
+		        		document.getElementById("Unit").value = data[0].Unit;	
+		        		var GoodsType = document.getElementById("GoodsType");
+		        		GoodsType.selectedIndex = data[0].GoodsType-1; // 选中索引
+		        	}	        	
+		        },
+		       error: function( msg ) { 
+		    	   alert("获取新闻信息失败"); 
+		        }
+		});	
+	}
+
 	function confirm()
 	{
 		var GoodsType = document.getElementById("GoodsType");
@@ -89,24 +117,25 @@
 				   '","UnitPrice":"'+document.getElementById("UnitPrice").value+
 				   '","Unit":"'+document.getElementById("Unit").value+
 				   '","GoodsType":"'+GoodsTypevalue+
+				   '","GoodsID":"'+GoodsID+
 			       '"}';
 			       
 		$.ajax({
 	        type: "Post",
-	        url: "AddGoods?jsonStr="+jsonStr,
+	        url: "UpdateGoods?jsonStr="+jsonStr,
 	        dataType: "html",
 	        data: {		            
 	        },
 	        success: function (data) {
 	        	if(data=="error"){	
-	        		alert("新建货物失败."); 
+	        		alert("更新货物失败."); 
 	        	}else{
 	        		window.opener.location.href = window.opener.location.href;
 	        		window.close();  
 	        	}	        	
 	        },
 	       error: function( msg ) { 
-	    	   alert("新建货物失败!"); 
+	    	   alert("更新货物失败!"); 
 	        }
 		});	
 	}

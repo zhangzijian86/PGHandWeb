@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.pg.bean.Pg_goods;
 import com.pg.bean.Pg_order;
@@ -223,6 +222,74 @@ public class DaoImpl
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}			
+			}
+			getConn.closeconn(conn);
+	    	return i;
+	  }
+		
+		public List<Pg_goods> GetOneGoods(String GoodsID) 
+	   	{
+	   		int rows;
+	   		GetConn getConn=new GetConn();
+	   		ResultSet rs = null;
+	   		Connection conn=getConn.getConnection();
+	   		List<Pg_goods> list=new ArrayList<Pg_goods>();
+	   		Pg_goods goods = null;  	
+
+	   		try {
+	   			PreparedStatement ps=conn.prepareStatement(
+	   					"select GoodsID,GoodsName,GoodsType,"+
+	   					"Number,UnitPrice,Unit,Status,"+
+	   					"CreatedBy,CreatedDate,ModifiedBy,ModifiedDate from "+ 
+	   					"pg_goods where status = 1 and GoodsID = '"+GoodsID+"'");   			
+				System.out.println("=GetOneGoods=sql="+ps.toString());
+	   			rs=ps.executeQuery();
+	   			if(rs!=null){    		
+	   	    		rs.last();
+	   	    		rows = rs.getRow();
+	   	    		rs.beforeFirst();
+	   	    		for(int i=0;i<rows;i++)
+	   		    	{	    			
+	   		    		rs.next();
+	   		    		goods = new Pg_goods();		    	
+	   		    		goods.setGoodsID(rs.getString("GoodsID"));
+	   		    		goods.setGoodsName(rs.getString("GoodsName"));
+	   		    		goods.setGoodsType(rs.getString("GoodsType"));	 
+	   		    		goods.setNumber(rs.getString("Number"));		   		    		
+	   		    		goods.setUnitPrice(rs.getString("UnitPrice"));
+	   		    		goods.setUnit(rs.getString("Unit"));	 
+	   		    		goods.setStatus(rs.getString("Status"));	 
+	   		    		goods.setCreatedBy(rs.getString("CreatedBy"));
+	   		    		goods.setCreatedDate(rs.getString("CreatedDate"));
+	   		    		goods.setModifiedBy(rs.getString("ModifiedBy"));
+	   		    		goods.setModifiedDate(rs.getString("ModifiedDate"));
+	   		    		list.add(goods);
+	   		    	}
+	   			}
+	   		} catch (SQLException e) {
+	   			e.printStackTrace();
+	   		}
+	   		return list;
+	   	}
+		
+		public int UpdateGoods(Pg_goods goods){
+	    	GetConn getConn=new GetConn();
+			int i = 0;
+			Connection conn=getConn.getConnection();				
+			try {
+				PreparedStatement ps=conn.prepareStatement(
+				"update pg_goods set "+ 
+				"Number="+goods.getNumber()+","+
+				"UnitPrice="+goods.getUnitPrice()+","+
+				"Unit="+goods.getUnit()+","+
+				"GoodsType="+goods.getGoodsType()+","+
+				"ModifiedDate = now() "+ 
+				"where GoodsID = '"+goods.getGoodsID()+"'"			
+	        	);		
+				System.out.println("=AddGoods=sql3="+ps.toString());
+				i=ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 			getConn.closeconn(conn);
 	    	return i;

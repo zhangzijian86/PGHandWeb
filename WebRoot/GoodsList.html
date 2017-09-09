@@ -115,9 +115,15 @@
 			        		alert("帐号或密码错误!");
 			        	}else{			        		
                         	for(var i=0;i<data.length;i++){  
-                            		htmltmp=htmltmp+"<tr><td width='17%'><a href='javascript:modify(\""+data[i].GoodsID+"\");' target='_blank'>"+data[i].GoodsName+"</a></td>"+
-                            		"<td width='17%'>"+data[i].GoodsType+"</td><td width='17%'>"+data[i].Number+"</td>"+
-                            		"<td width='17%'>"+data[i].UnitPrice+"</td><td width='17%'>"+data[i].Unit+"</td>"+
+                            		htmltmp=htmltmp+"<tr><td width='17%'><a href='javascript:modify(\""+data[i].GoodsID+"\");' target='_blank'>"+data[i].GoodsName+"</a></td>";
+                            		if(data[i].GoodsType=="1"){
+                            			htmltmp=htmltmp+"<td width='17%'>烟</td><td width='17%'>"+data[i].Number+"</td>";
+                            		}else if(data[i].GoodsType=="2"){
+                            			htmltmp=htmltmp+"<td width='17%'>酒</td><td width='17%'>"+data[i].Number+"</td>";
+                            		}else if(data[i].GoodsType=="3"){
+                            			htmltmp=htmltmp+"<td width='17%'>茶</td><td width='17%'>"+data[i].Number+"</td>";
+                            		}
+                            		htmltmp=htmltmp+"<td width='17%'>"+data[i].UnitPrice+"</td><td width='17%'>"+data[i].Unit+"</td>"+
                             		"<td width='11%'><a href='javascript:deleteGoods(\""+data[i].GoodsID+"\");' target='_blank'>"+"删除"+"</a></td></tr>";	
                         	} 
                           end();
@@ -167,8 +173,8 @@
         }	
 	}	
 	
-	function modify(UserCode) {		
-		window.open("UserModify.html?userCode=" + UserCode, "",	"height=700, width=800");
+	function modify(GoodsID) {		
+		window.open("GoodsModify.html?GoodsID=" + GoodsID, "",	"height=700, width=800");
 	}
 	function addgoods(){
 		window.open("GoodsAdd.html", "",	"height=700, width=800");
