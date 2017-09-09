@@ -22,6 +22,13 @@
   <servlet>
     <description>This is the description of my J2EE component</description>
     <display-name>This is the display name of my J2EE component</display-name>
+    <servlet-name>DeleteOrder</servlet-name>
+    <servlet-class>com.pg.servlet.DeleteOrder</servlet-class>
+  </servlet>   
+  
+  <servlet>
+    <description>This is the description of my J2EE component</description>
+    <display-name>This is the display name of my J2EE component</display-name>
     <servlet-name>GetAllGoods</servlet-name>
     <servlet-class>com.pg.servlet.GetAllGoods</servlet-class>
   </servlet> 
@@ -63,6 +70,11 @@
     <servlet-name>GetAllOrders</servlet-name>
     <url-pattern>/GetAllOrders</url-pattern>
   </servlet-mapping> 
+  
+  <servlet-mapping>
+    <servlet-name>DeleteOrder</servlet-name>
+    <url-pattern>/DeleteOrder</url-pattern>
+  </servlet-mapping>  
   
   <servlet-mapping>
     <servlet-name>GetAllGoods</servlet-name>

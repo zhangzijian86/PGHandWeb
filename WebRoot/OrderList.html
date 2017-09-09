@@ -3,7 +3,7 @@
 <head>
 	    <meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    	<title>货物列表</title>
+    	<title>订单列表</title>
     	<!-- Bootstrap -->
     	<link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -18,27 +18,27 @@
         	<table class="table table-hover table-bordered">
             	<thead>
                 	<tr>
-                        <th colspan="4"><h3>货物列表</h3></th>     
-                        <th><h3><a href="javascript:addgoods()">添加货物</a></h3></th>    
-                        <th><h3><a href="javascript:orderlist()">订单列表</a></h3></th>                                                               
+                        <th colspan="4"><h3>订单列表</h3></th>     
+                        <th><h3><a href="javascript:addgoods()">添加订单</a></h3></th>    
+                        <th><h3><a href="javascript:history.go(-1)">返回</a></h3></th>                                                               
                     </tr>
                 </thead>
                 <tbody id="tbody">
 				 <tr class="warning">
                         <td width="17%">
-                        	名称
+                        	订单名称
                         </td >
                        <td width="17%">
-                        	类别
+                        	订单总价
                         </td>
                         <td width="17%">
-                        	数量
+                        	实际总价
                         </td> 
                         <td width="17%">
-                        	单价
+                        	客户名称
                         </td>
                         <td width="17%">
-                        	单位
+                        	订单时间
                         </td>
                         <td width="15%">
                         	删除
@@ -81,11 +81,12 @@
 	var count=-1;
 	function getdata(){
 		//alert("==url=="+url);		
-		htmltmp="<tr class='warning'><td width='17%'>名称</td >"+
-		"<td width='17%'>类别</td><td width='17%'>数量</td><td width='17%'>单价</td><td width='17%'>单位</td><td width='15%'>删除</td></tr>";
+		htmltmp="<tr class='warning'><td width='17%'>订单名称</td >"+
+		"<td width='17%'>订单总价</td><td width='17%'>实际总价</td><td width='17%'>客户名称</td>"+
+		"<td width='17%'>订单时间</td><td width='15%'>删除</td></tr>";
 		$.ajax({
 	        type: "Post",
-	        url: "GetCount?Name=pg_goods&Condition=where Status = 1",
+	        url: "GetCount?Name=pg_order&Condition=where Status = 1",
 	        dataType: "html",
 	        data: {		            
 	        },
@@ -98,7 +99,7 @@
 	        	}	        	
 	        },
 	       error: function( msg ) { 
-	    	   alert("获取货物总数失败"); 
+	    	   alert("获取订单总数失败"); 
 	        }
 		});		
 	}	
@@ -106,7 +107,7 @@
 		if(count!=-1){
 			 $.ajax({
 			        type: "Post",
-			        url: "GetAllGoods?CurrentPage="+currentPage+"&EachPage=10",
+			        url: "GetAllOrders?CurrentPage="+currentPage+"&EachPage=10",
 			        dataType: "json",
 			        data: {		            
 			        },
@@ -115,22 +116,16 @@
 			        		alert("帐号或密码错误!");
 			        	}else{			        		
                         	for(var i=0;i<data.length;i++){  
-                            		htmltmp=htmltmp+"<tr><td width='17%'><a href='javascript:modify(\""+data[i].GoodsID+"\");' target='_blank'>"+data[i].GoodsName+"</a></td>";
-                            		if(data[i].GoodsType=="1"){
-                            			htmltmp=htmltmp+"<td width='17%'>烟</td><td width='17%'>"+data[i].Number+"</td>";
-                            		}else if(data[i].GoodsType=="2"){
-                            			htmltmp=htmltmp+"<td width='17%'>酒</td><td width='17%'>"+data[i].Number+"</td>";
-                            		}else if(data[i].GoodsType=="3"){
-                            			htmltmp=htmltmp+"<td width='17%'>茶</td><td width='17%'>"+data[i].Number+"</td>";
-                            		}
-                            		htmltmp=htmltmp+"<td width='17%'>"+data[i].UnitPrice+"</td><td width='17%'>"+data[i].Unit+"</td>"+
-                            		"<td width='11%'><a href='javascript:deleteGoods(\""+data[i].GoodsID+"\");' target='_blank'>"+"删除"+"</a></td></tr>";	
+                            		htmltmp=htmltmp+"<tr><td width='17%'><a href='javascript:modify(\""+data[i].OrderID+"\");' target='_blank'>"+data[i].OrderName+"</a></td>";
+                            		htmltmp=htmltmp+"<td width='17%'>"+data[i].TotalPrice+"</td><td width='17%'>"+data[i].ActualPrice+"</td>";
+                            		htmltmp=htmltmp+"<td width='17%'>"+data[i].Customer+"</td><td width='17%'>"+data[i].OrderDate+"</td>"+
+                            		"<td width='11%'><a href='javascript:deleteOrder(\""+data[i].OrderID+"\");' target='_blank'>"+"删除"+"</a></td></tr>";	
                         	} 
                           end();
 			        	}	        	
 			        },
 			       error: function( msg ) { 
-			    	   alert("获取货物信息失败"); 
+			    	   alert("获取订单信息失败！！"); 
 			       }
 			});				
 		}
@@ -146,17 +141,18 @@
 		document.getElementById('tbody').innerHTML=htmltmp;
 	}
 	function paging(currentPage) {
-		htmltmp="<tr class='warning'><td width='17%'>名称</td >"+
-		"<td width='17%'>类别</td><td width='17%'>数量</td><td width='17%'>单价</td><td width='17%'>单位</td><td width='15%'>删除</td></tr>";
+		htmltmp="<tr class='warning'><td width='17%'>订单名称</td >"+
+		"<td width='17%'>订单总价</td><td width='17%'>实际总价</td><td width='17%'>客户名称</td>"+
+		"<td width='17%'>订单时间</td><td width='15%'>删除</td></tr>";
 		init(currentPage)
 	}
-	function deleteGoods(GoodsID){
-        if (confirm("你确定删除货物吗？")) {  
+	function deleteOrder(OrderID){
+        if (confirm("你确定删除订单吗？")) {  
         	//var jsonStr='{"UserCode":"'+userCode+
  	        //'"}';	
  			$.ajax({
 	 			 type: "Post",
-	 			 url: "DeleteGoods?GoodsID="+GoodsID,
+	 			 url: "DeleteOrder?OrderID="+OrderID,
 	 			 dataType: "html",
 	 			 data: {		            
 	 			 },
@@ -167,7 +163,7 @@
 	 			 	}	        	
 	 			 },
 	 			error: function( msg ) { 
-	 				   alert("删除货物信息失败!"); 
+	 				   alert("删除订单信息失败!"); 
 	 			 }
  			});	
         }	
@@ -180,9 +176,6 @@
 		window.open("GoodsAdd.html", "",	"height=700, width=800");
 		//window.location.href="UserAdd.html"
 	}
-	function orderlist(){
-		window.location.href="OrderList.html"
-	}	
 </script>
 </html>
 

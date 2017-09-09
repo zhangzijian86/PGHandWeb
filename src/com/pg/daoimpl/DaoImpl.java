@@ -51,7 +51,7 @@ public class DaoImpl
 	   					"select OrderID,OrderName,TotalPrice,ActualPrice,"+
 	   					"Customer,CustomerAddress,Status,OrderDate,CreatedBy,"+
 	   					"CreatedDate,ModifiedBy,ModifiedDate from "+ 
-	   					"pg_order where status = 1 "+ strTmp +" desc limit ?, ?");
+	   					"pg_order where status = 1 "+ strTmp +" order by  ModifiedDate desc limit ?, ?");
 	   			int intcurrentPage = Integer.parseInt(currentPage);
 	   			int inteachPage = Integer.parseInt(eachPage);
 	   			if(currentPage.equals("0")){
@@ -157,6 +157,25 @@ public class DaoImpl
 		        	     + "where GoodsID = ?"
 		        	     );
 				ps.setString(1,GoodsID);	
+				System.out.println("=DeleteGoods=sql="+ps.toString());
+				i=ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			getConn.closeconn(conn);
+			return i;
+		}
+		
+		public int DeleteOrder(String OrderID){
+			GetConn getConn=new GetConn();
+			int i = 0;
+			Connection conn=getConn.getConnection();
+			try {
+				PreparedStatement ps=conn.prepareStatement("update pg_order "
+						 + "set Status = -1 , ModifiedDate = now() "
+		        	     + "where OrderID = ?"
+		        	     );
+				ps.setString(1,OrderID);	
 				System.out.println("=DeleteOrder=sql="+ps.toString());
 				i=ps.executeUpdate();
 			} catch (SQLException e) {

@@ -30,7 +30,9 @@ public class GetAllOrders extends HttpServlet {
 		String CurrentPage=request.getParameter("CurrentPage");
 		String EachPage=request.getParameter("EachPage");
 		String OrderTmp=request.getParameter("OrderTmp");
-		OrderTmp = new String(OrderTmp.getBytes("ISO-8859-1"), "UTF-8");
+		if(OrderTmp!=null){
+			OrderTmp = new String(OrderTmp.getBytes("ISO-8859-1"), "UTF-8");
+		}
 		System.out.println("====GetAllOrders=============CurrentPage======"+CurrentPage);
 		System.out.println("====GetAllOrders=============EachPage======"+EachPage);
 		System.out.println("====GetAllOrders=============OrderTmp======"+OrderTmp);
