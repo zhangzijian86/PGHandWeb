@@ -313,4 +313,26 @@ public class DaoImpl
 			getConn.closeconn(conn);
 	    	return i;
 	  }
+		
+		public int AddOrder(Pg_order order){
+	    	GetConn getConn=new GetConn();
+			int i = 0;
+			Connection conn=getConn.getConnection();				
+			try {
+				PreparedStatement ps=conn.prepareStatement(
+				"insert into pg_order(OrderID,OrderName,TotalPrice,"+ 
+				"ActualPrice,Customer,CustomerAddress,Status,OrderDate,"+
+				"CreatedBy,CreatedDate,ModifiedBy,ModifiedDate)"+
+				"value('"+order.getOrderID()+"','"+order.getOrderName()+"','"+order.getTotalPrice()+"',"+
+				"'"+order.getActualPrice()+"','"+order.getCustomer()+"','"+order.getCustomerAddress()+ 
+				"','1',now(),'zzj',now(),'zzj',now());"			
+	        	);		
+				System.out.println("=AddOrder=sql="+ps.toString());
+				i=ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			getConn.closeconn(conn);
+	    	return i;
+	  }
 }

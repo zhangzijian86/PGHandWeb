@@ -14,10 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.pg.daoimpl.DaoImpl;
-import com.pg.bean.Pg_goods;
+import com.pg.bean.Pg_order;
 
 @SuppressWarnings("serial")
-public class AddGoods extends HttpServlet {
+public class AddOrder extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -33,11 +33,11 @@ public class AddGoods extends HttpServlet {
 	    Gson gson=new Gson();
 		String jsonStr=request.getParameter("jsonStr");
 		jsonStr = new String(jsonStr.getBytes("ISO-8859-1"), "UTF-8");
-		Pg_goods goods = null;
-		goods = gson.fromJson(jsonStr, Pg_goods.class); 
+		Pg_order goods = null;
+		goods = gson.fromJson(jsonStr, Pg_order.class); 
 		if(goods!=null){
 			DaoImpl userDaoImpl=new DaoImpl();
-			int flag=userDaoImpl.AddGoods(goods);
+			int flag=userDaoImpl.AddOrder(goods);
 			if(flag<0){
 				out.write("error");		
 			}else{

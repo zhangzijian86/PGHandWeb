@@ -19,7 +19,7 @@
             	<thead>
                 	<tr>
                         <th colspan="4"><h3>订单列表</h3></th>     
-                        <th><h3><a href="javascript:addgoods()">添加订单</a></h3></th>    
+                        <th><h3><a href="javascript:addorder()">添加订单</a></h3></th>    
                         <th><h3><a href="javascript:history.go(-1)">返回</a></h3></th>                                                               
                     </tr>
                 </thead>
@@ -172,8 +172,8 @@
 	function modify(GoodsID) {		
 		window.open("GoodsModify.html?GoodsID=" + GoodsID, "",	"height=700, width=800");
 	}
-	function addgoods(){
-		window.open("GoodsAdd.html", "",	"height=700, width=800");
+	function addorder(){
+		window.open("OrderAdd.html", "",	"height=700, width=800");
 		//window.location.href="UserAdd.html"
 	}
 </script>
