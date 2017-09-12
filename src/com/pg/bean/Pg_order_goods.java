@@ -7,7 +7,7 @@ public class Pg_order_goods {
 	private String OrderCode;		 //订单code 来源于(pg_order)
 	private String GoodsType;		 //1,烟 2,酒 3,茶
 	private String Number;			 //数量
-	private String Price;			 //单价	
+	private String UnitPrice;			 //单价	
 	private String TotalPrice;		 //总价	
 	private String Status; 			 //订单状态(1有效, 0, 未确认  -1,删除)
 	private String CreatedBy; 		 //创建人
@@ -55,11 +55,11 @@ public class Pg_order_goods {
 	public void setNumber(String number) {
 		Number = number;
 	}
-	public String getPrice() {
-		return Price;
+	public String getUnitPrice() {
+		return UnitPrice;
 	}
-	public void setPrice(String price) {
-		Price = price;
+	public void setUnitPrice(String price) {
+		UnitPrice = price;
 	}
 	public String getTotalPrice() {
 		return TotalPrice;

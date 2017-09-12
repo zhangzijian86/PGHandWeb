@@ -335,4 +335,65 @@ public class DaoImpl
 			getConn.closeconn(conn);
 	    	return i;
 	  }
+		
+		public int AddOrderGoods(String OrderID,String GoodsName,String Number){
+	    	GetConn getConn=new GetConn();
+	    	int rows = 0;
+			int i = 0;
+			ResultSet rs = null;
+			int flag = 0;
+			int hasNumber = 0;
+			
+			String GoodsType = "";
+			String UnitPrice = "";
+			float TotalPrice  = 0;
+			Connection conn=getConn.getConnection();			
+			try {
+	   			PreparedStatement ps=conn.prepareStatement(
+	   					"select GoodsID,GoodsName,GoodsType,Number,UnitPrice from pg_goods "+ 
+	   					"where Status =1 and GoodsName = '"+GoodsName+"'");
+	   			System.out.println("=AddOrderGoods=sql1="+ps.toString());
+	   			rs=ps.executeQuery();
+	   			if(rs!=null){    		
+	   				rs.last();
+	   	    		rows = rs.getRow();
+	   	    		rs.beforeFirst();
+	   	    		if(rows>0)
+	   		    	{	    	
+	   	    			rs.next();
+	   	    			hasNumber = rs.getInt("Number");	 
+	   		    		GoodsType  = rs.getString("GoodsType");
+	   		    		UnitPrice = rs.getString("UnitPrice");
+	   		    		TotalPrice = (Float.parseFloat(UnitPrice)*Integer.parseInt(Number));
+	   	    			flag = 1;
+	   	    		}
+	   			}	   			
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if(flag == 0){
+				return 5;
+			}else{
+				if(hasNumber<Integer.parseInt(Number)){
+					return 56;
+				}else{
+					try {
+						PreparedStatement ps=conn.prepareStatement(
+						"insert into pg_order_goods (GoodsID,"+
+						"GoodsName,OrderID,GoodsType,Number,UnitPrice,TotalPrice,"+
+						"Status,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate)"+
+						"value (UUID(),'"+GoodsName+"','"+OrderID+"','"+GoodsType+"',"+ 
+						"'"+Number+"','"+UnitPrice+"','"+TotalPrice+"','0',"+ 
+						"'zzj',now(),'zzj',now());"			
+			        	);		
+						System.out.println("=AddOrderGoods=sql3="+ps.toString());
+						i=ps.executeUpdate();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			getConn.closeconn(conn);
+			return i;
+		}
 }

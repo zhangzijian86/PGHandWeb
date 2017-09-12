@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title>添加订单货物</title>
+    	<link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    	<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+	</head>
+    <body>
+    	<form  class="form-horizontal" id = "ajaxFrm"  >
+        	<table class="table table-hover table-bordered">
+            	<thead>
+                	<tr>
+                        <th><h3>添加订单货物</h3></th>
+                    </tr>
+                </thead>
+                <tbody>
+                      <tr>
+                        <td>
+                        	<label class="control-label" for="inputEmail">名称</label>
+							<div class="controls">
+								<input class="input-xxlarge" type="text" name="GoodsName" id="GoodsName" size="10"  placeholder="名称"  value ="" >
+							</div>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td>
+                        	<label class="control-label" for="inputEmail">数量</label>
+							<div class="controls">
+								<input class="input-xxlarge" type="text" name="Number" id="Number" size="10"  placeholder="数量"  value ="" >
+							</div>
+                        </td>
+                    </tr>                                 
+                    <tr>
+                    	<td>
+                        	<div class="controls">                        	    
+                                <button class="btn btn-primary"  type="button" onclick="confirm()">确定</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+<script type="text/javascript" src="js/jquery-1.4.1.js"></script>
+<script type="text/javascript"> 
+    var uuidtmp = "";
+	var url = document.URL;
+	var tmpNews = url.split('?')[1];  
+	uuidtmp = tmpNews.split("=")[1];  
+	function confirm()
+	{
+		$.ajax({
+			 type: "Post",
+			 url: "AddOrderGoods?OrderID="+uuidtmp+"&GoodsName="+document.getElementById("GoodsName").value+"&Number="+document.getElementById("Number").value,
+			 dataType: "html",
+			 data: {		            
+			 },
+			 success: function (data) {
+			 	if(data=="error"){	
+			 		alert("新建订单货物失败."); 
+			 	}if(data=="nogoods"){
+			 		alert("没有此货物."); notenough
+			 	}if(data=="notenough"){
+			 		alert("库存不够货物."); 
+			 	}else{
+			 		window.opener.location.href = window.opener.location.href;
+			 		window.close();  
+			 	}	        	
+			 },
+			error: function( msg ) { 
+				   alert("新建订单货物失败!"); 
+			 }
+		});	
+	}	
+</script>
+</html>
+
