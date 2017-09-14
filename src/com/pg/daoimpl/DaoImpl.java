@@ -498,4 +498,49 @@ public class DaoImpl
 		   		}
 		   		return list;
 		   	}
+		  
+		  public List<Pg_order> GetOneOrder(String OrderID) 
+		   	{
+		   		int rows;
+		   		GetConn getConn=new GetConn();
+		   		ResultSet rs = null;
+		   		Connection conn=getConn.getConnection();
+		   		List<Pg_order> list=new ArrayList<Pg_order>();
+		   		Pg_order porder = null;
+		   		try {
+		   			PreparedStatement ps=conn.prepareStatement(
+		   					"select OrderID,OrderName,TotalPrice,ActualPrice,"+
+		   					"Customer,CustomerAddress,Status,OrderDate,CreatedBy,"+
+		   					"CreatedDate,ModifiedBy,ModifiedDate from "+ 
+		   					"pg_order where status = 1 and OrderID = '"+ OrderID +"'");		   			
+		   			System.out.println("=GetAllOrders=sql="+ps.toString());
+		   			rs=ps.executeQuery();
+		   			if(rs!=null){    		
+		   	    		rs.last();
+		   	    		rows = rs.getRow();
+		   	    		rs.beforeFirst();
+		   	    		for(int i=0;i<rows;i++)
+		   		    	{	    			
+		   		    		rs.next();
+		   		    		porder = new Pg_order();
+		   		    		porder.setOrderID(rs.getString("OrderID"));
+		   		    		porder.setOrderName(rs.getString("OrderName"));
+		   		    		porder.setTotalPrice(rs.getString("TotalPrice"));	 
+		   		    		porder.setActualPrice(rs.getString("ActualPrice"));		   		    		
+		   		    		porder.setCustomer(rs.getString("Customer"));
+		   		    		porder.setCustomerAddress(rs.getString("CustomerAddress"));	 
+		   		    		porder.setStatus(rs.getString("Status"));	 
+		   		    		porder.setOrderDate(rs.getString("OrderDate"));
+				    		porder.setCreatedBy(rs.getString("CreatedBy"));
+				    		porder.setCreatedDate(rs.getString("CreatedDate"));
+				    		porder.setModifiedBy(rs.getString("ModifiedBy"));
+				    		porder.setModifiedDate(rs.getString("ModifiedDate"));
+		   		    		list.add(porder);
+		   		    	}
+		   			}
+		   		} catch (SQLException e) {
+		   			e.printStackTrace();
+		   		}
+		   		return list;
+		   	}
 }
