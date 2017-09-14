@@ -2,12 +2,13 @@ package com.pg.bean;
 
 public class Pg_order_goods {
 	private String GoodsID;			 //订单系物品系统编码
-	//private String GoodsCode;		 //订单物品编码
+	private String OrderID;		 	 //订单编码	
 	private String GoodsName;		 //订单物品名称
 	private String OrderCode;		 //订单code 来源于(pg_order)
 	private String GoodsType;		 //1,烟 2,酒 3,茶
 	private String Number;			 //数量
-	private String UnitPrice;			 //单价	
+	private String UnitPrice;		 //单价	
+	private String Unit;		     //单位
 	private String TotalPrice;		 //总价	
 	private String Status; 			 //订单状态(1有效, 0, 未确认  -1,删除)
 	private String CreatedBy; 		 //创建人
@@ -25,12 +26,12 @@ public class Pg_order_goods {
 	public void setGoodsID(String goodsID) {
 		GoodsID = goodsID;
 	}
-	//public String getGoodsCode() {
-	//	return GoodsCode;
-	//}
-	//public void setGoodsCode(String goodsCode) {
-	//	GoodsCode = goodsCode;
-	//}
+	public String getOrderID() {
+		return OrderID;
+	}
+	public void setOrderID(String orderID) {
+		OrderID = orderID;
+	}
 	public String getGoodsName() {
 		return GoodsName;
 	}
@@ -60,6 +61,12 @@ public class Pg_order_goods {
 	}
 	public void setUnitPrice(String price) {
 		UnitPrice = price;
+	}
+	public String getUnit() {
+		return Unit;
+	}
+	public void setUnit(String unit) {
+		Unit = unit;
 	}
 	public String getTotalPrice() {
 		return TotalPrice;

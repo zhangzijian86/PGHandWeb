@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.pg.bean.Pg_goods;
 import com.pg.bean.Pg_order;
+import com.pg.bean.Pg_order_goods;
 import com.pg.db.GetConn;
 
 public class DaoImpl 
@@ -158,6 +159,25 @@ public class DaoImpl
 		        	     );
 				ps.setString(1,GoodsID);	
 				System.out.println("=DeleteGoods=sql="+ps.toString());
+				i=ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			getConn.closeconn(conn);
+			return i;
+		}
+		
+		public int DeleteOrderGoods(String GoodsID,String GoodsName){
+			GetConn getConn=new GetConn();
+			int i = 0;
+			Connection conn=getConn.getConnection();
+			try {
+				PreparedStatement ps=conn.prepareStatement("update pg_order_goods "
+						 + "set Status = -1 , ModifiedDate = now() "
+		        	     + "where GoodsID = ? and GoodsName = '"+GoodsName+"'"
+		        	     );
+				ps.setString(1,GoodsID);	
+				System.out.println("=DeleteOrderGoods=sql="+ps.toString());
 				i=ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -327,11 +347,25 @@ public class DaoImpl
 				"'"+order.getActualPrice()+"','"+order.getCustomer()+"','"+order.getCustomerAddress()+ 
 				"','1',now(),'zzj',now(),'zzj',now());"			
 	        	);		
-				System.out.println("=AddOrder=sql="+ps.toString());
+				System.out.println("=AddOrder=sql1="+ps.toString());
 				i=ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
+			try {
+				PreparedStatement ps=conn.prepareStatement(
+				"UPDATE pg_goods a , pg_order_goods b "+
+				"SET a.Number = a.Number - b.Number , "+
+				"b.`Status` = 1 WHERE a.GoodsName = b.GoodsName "+
+				"and b.`Status` != -1 and b.OrderID = '"+order.getOrderID()+"'"			
+	        	);		
+				System.out.println("=AddOrder=sql2="+ps.toString());
+				i=ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}			
+
 			getConn.closeconn(conn);
 	    	return i;
 	  }
@@ -347,10 +381,30 @@ public class DaoImpl
 			String GoodsType = "";
 			String UnitPrice = "";
 			float TotalPrice  = 0;
+			String Unit = "";
 			Connection conn=getConn.getConnection();			
 			try {
 	   			PreparedStatement ps=conn.prepareStatement(
-	   					"select GoodsID,GoodsName,GoodsType,Number,UnitPrice from pg_goods "+ 
+	   					"select GoodsID,GoodsName,GoodsType,Number,UnitPrice,Unit from pg_order_goods "+ 
+	   		   			"where Status !=-1 and GoodsName = '"+GoodsName+"' and OrderID = '"+OrderID+"'");
+	   			System.out.println("=AddOrderGoods=sql0="+ps.toString());
+	   			rs=ps.executeQuery();
+	   			if(rs!=null){    		
+	   				rs.last();
+	   	    		rows = rs.getRow();
+	   	    		rs.beforeFirst();
+	   	    		if(rows>0)
+	   		    	{	    	
+	   	    			return 10;
+	   	    		}
+	   			}	   			
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+	   			PreparedStatement ps=conn.prepareStatement(
+	   					"select GoodsID,GoodsName,GoodsType,Number,UnitPrice,Unit from pg_goods "+ 
 	   					"where Status =1 and GoodsName = '"+GoodsName+"'");
 	   			System.out.println("=AddOrderGoods=sql1="+ps.toString());
 	   			rs=ps.executeQuery();
@@ -364,6 +418,7 @@ public class DaoImpl
 	   	    			hasNumber = rs.getInt("Number");	 
 	   		    		GoodsType  = rs.getString("GoodsType");
 	   		    		UnitPrice = rs.getString("UnitPrice");
+	   		    		Unit = rs.getString("Unit");
 	   		    		TotalPrice = (Float.parseFloat(UnitPrice)*Integer.parseInt(Number));
 	   	    			flag = 1;
 	   	    		}
@@ -371,6 +426,7 @@ public class DaoImpl
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
 			if(flag == 0){
 				return 5;
 			}else{
@@ -381,10 +437,10 @@ public class DaoImpl
 						PreparedStatement ps=conn.prepareStatement(
 						"insert into pg_order_goods (GoodsID,"+
 						"GoodsName,OrderID,GoodsType,Number,UnitPrice,TotalPrice,"+
-						"Status,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate)"+
+						"Status,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate,Unit)"+
 						"value (UUID(),'"+GoodsName+"','"+OrderID+"','"+GoodsType+"',"+ 
 						"'"+Number+"','"+UnitPrice+"','"+TotalPrice+"','0',"+ 
-						"'zzj',now(),'zzj',now());"			
+						"'zzj',now(),'zzj',now(),'"+Unit+"');"			
 			        	);		
 						System.out.println("=AddOrderGoods=sql3="+ps.toString());
 						i=ps.executeUpdate();
@@ -396,4 +452,50 @@ public class DaoImpl
 			getConn.closeconn(conn);
 			return i;
 		}
+		
+		
+		  public List<Pg_order_goods> GetOrderGoods(String OrderID) 
+		   	{
+		   		int rows;
+		   		GetConn getConn=new GetConn();
+		   		ResultSet rs = null;
+		   		Connection conn=getConn.getConnection();
+		   		List<Pg_order_goods> list=new ArrayList<Pg_order_goods>();
+		   		Pg_order_goods goods = null;
+		   		try {
+		   			PreparedStatement ps=conn.prepareStatement(
+		   					"select GoodsID,GoodsName,GoodsType,"+
+		   					"Number,UnitPrice,Unit,Status,"+
+		   					"CreatedBy,CreatedDate,ModifiedBy,ModifiedDate,TotalPrice,OrderID from "+ 
+		   					"pg_order_goods where status !=-1 and OrderID = '"+OrderID+"' order by  ModifiedDate desc ");
+		   			System.out.println("=GetOrderGoods=sql="+ps.toString());
+		   			rs=ps.executeQuery();
+		   			if(rs!=null){    		
+		   	    		rs.last();
+		   	    		rows = rs.getRow();
+		   	    		rs.beforeFirst();
+		   	    		for(int i=0;i<rows;i++)
+		   		    	{	    			
+		   		    		rs.next();
+		   		    		goods = new Pg_order_goods();
+		   		    		goods.setGoodsID(rs.getString("GoodsID"));
+		   		    		goods.setGoodsName(rs.getString("GoodsName"));
+		   		    		goods.setGoodsType(rs.getString("GoodsType"));	 
+		   		    		goods.setNumber(rs.getString("Number"));		   		    		
+		   		    		goods.setUnitPrice(rs.getString("UnitPrice"));
+		   		    		goods.setUnit(rs.getString("Unit"));	 
+		   		    		goods.setStatus(rs.getString("Status"));	 
+		   		    		goods.setTotalPrice(rs.getString("TotalPrice"));	 
+		   		    		goods.setCreatedBy(rs.getString("CreatedBy"));
+		   		    		goods.setCreatedDate(rs.getString("CreatedDate"));
+		   		    		goods.setModifiedBy(rs.getString("ModifiedBy"));
+		   		    		goods.setModifiedDate(rs.getString("ModifiedDate"));
+		   		    		list.add(goods);
+		   		    	}
+		   			}
+		   		} catch (SQLException e) {
+		   			e.printStackTrace();
+		   		}
+		   		return list;
+		   	}
 }

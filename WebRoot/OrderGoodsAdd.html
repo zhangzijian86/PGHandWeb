@@ -65,11 +65,15 @@
 			 success: function (data) {
 			 	if(data=="error"){	
 			 		alert("新建订单货物失败."); 
-			 	}if(data=="nogoods"){
-			 		alert("没有此货物."); notenough
-			 	}if(data=="notenough"){
+			 	}else if(data=="hasadd"){
+			 		alert("此货物已添加."); 
+			 	}else if(data=="nogoods"){
+			 		alert("没有此货物.");
+			 	}else if(data=="notenough"){
 			 		alert("库存不够货物."); 
 			 	}else{
+			 		var storage=window.localStorage;
+			 		storage.setItem('key', uuidtmp);
 			 		window.opener.location.href = window.opener.location.href;
 			 		window.close();  
 			 	}	        	
