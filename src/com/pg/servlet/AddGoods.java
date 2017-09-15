@@ -32,7 +32,7 @@ public class AddGoods extends HttpServlet {
 	    PrintWriter out=response.getWriter();
 	    Gson gson=new Gson();
 		String jsonStr=request.getParameter("jsonStr");
-		jsonStr = new String(jsonStr.getBytes("ISO-8859-1"), "UTF-8");
+		//jsonStr = new String(jsonStr.getBytes("ISO-8859-1"), "UTF-8");
 		Pg_goods goods = null;
 		goods = gson.fromJson(jsonStr, Pg_goods.class); 
 		if(goods!=null){

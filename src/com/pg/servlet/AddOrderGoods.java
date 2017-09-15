@@ -34,13 +34,12 @@ public class AddOrderGoods extends HttpServlet {
 		String OrderID=request.getParameter("OrderID");
 		String GoodsName=request.getParameter("GoodsName");
 		String Number=request.getParameter("Number");
-		if(GoodsName!=null){
-			GoodsName  = new String(GoodsName.getBytes("ISO-8859-1"), "UTF-8");
-		}
-		if(Number!=null){
-			Number  = new String(Number.getBytes("ISO-8859-1"), "UTF-8");
-		}
-
+//		if(GoodsName!=null){
+//			GoodsName  = new String(GoodsName.getBytes("ISO-8859-1"), "UTF-8");
+//		}
+//		if(Number!=null){
+//			Number  = new String(Number.getBytes("ISO-8859-1"), "UTF-8");
+//		}
 		DaoImpl userDaoImpl=new DaoImpl();
 		int flag=userDaoImpl.AddOrderGoods(OrderID,GoodsName,Number);
 		if(flag<0){

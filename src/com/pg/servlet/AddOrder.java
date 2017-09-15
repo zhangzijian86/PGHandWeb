@@ -32,7 +32,7 @@ public class AddOrder extends HttpServlet {
 	    PrintWriter out=response.getWriter();
 	    Gson gson=new Gson();
 		String jsonStr=request.getParameter("jsonStr");
-		jsonStr = new String(jsonStr.getBytes("ISO-8859-1"), "UTF-8");
+//		jsonStr = new String(jsonStr.getBytes("ISO-8859-1"), "UTF-8");
 		Pg_order goods = null;
 		goods = gson.fromJson(jsonStr, Pg_order.class); 
 		if(goods!=null){

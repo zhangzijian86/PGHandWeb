@@ -30,9 +30,9 @@ public class GetAllGoods extends HttpServlet {
 		String CurrentPage=request.getParameter("CurrentPage");
 		String EachPage=request.getParameter("EachPage");
 		String GoodsTmp=request.getParameter("GoodsTmp");
-		if(GoodsTmp!=null){
-			GoodsTmp = new String(GoodsTmp.getBytes("ISO-8859-1"), "UTF-8");
-		}		 
+//		if(GoodsTmp!=null){
+//			GoodsTmp = new String(GoodsTmp.getBytes("ISO-8859-1"), "UTF-8");
+//		}		 
 		System.out.println("====GetAllGoods=============CurrentPage======"+CurrentPage);
 		System.out.println("====GetAllGoods=============EachPage======"+EachPage);
 		System.out.println("====GetAllGoods=============OrderTmp======"+GoodsTmp);
